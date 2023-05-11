@@ -22,6 +22,8 @@ void my_mlx_pixel_put(t_data *data, int x, int y, int color)
 verde e azul.*/
 int	create_trgb(int t, int r, int g, int b)
 {
+    //printf("%d\n", (t << 24 | r << 16 | g << 8 | b));
+    //printf("%d\n", 0x73347666);
 	return (t << 24 | r << 16 | g << 8 | b);
 }
 
@@ -38,9 +40,9 @@ int main (void)
     img.img = mlx_new_image(mlx, 1920, 1800);
     /*Obtem info da imagem apartir dos parametros passados*/
     img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
-    /*Penso que esta função sirva para ajustar o posição da imagem a janela
-    tendo em conta o tamanho da imagem*/
-    my_mlx_pixel_put(&img, 20, 20, 0x00FFFF00);
+    /*Esta funcao ajusta o pixel a imagem e atribui cor a localizacao em questao
+    no adereco certo*/
+    my_mlx_pixel_put(&img, 20, 20, create_trgb(115, 52, 118, 102));
     /*Coloca a imagem na janela e indica a posição do eixo dos x e y em
     que esta se encontra*/
 	mlx_put_image_to_window(mlx, mlx_window, img.img, 960, 540);

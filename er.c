@@ -10,16 +10,29 @@ int main (void)
 }*/
 
 #include <mlx.h>
+#include <stdio.h>
+#include <unistd.h>
 
 typedef struct	s_vars {
 	void	*mlx;
 	void	*win;
 }				t_vars;
 
-int	close(int keycode, t_vars *vars)
+void ft_putchar(char c)
 {
-	mlx_destroy_window(vars->mlx, vars->win);
-	return (0);
+	write(1, &c, 1);
+}
+
+int	doing(int keycode, t_vars *vars)
+{
+	if ( keycode == 65307)
+	{
+		//printf("%d\n", keycode);
+		mlx_destroy_window(vars->mlx, vars->win);
+	}
+	else
+		ft_putchar('X');
+	return (keycode);
 }
 
 int	main(void)
@@ -28,6 +41,7 @@ int	main(void)
 
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, 1920, 1080, "Hello world!");
-	key_hook(vars.win, 3, 1L<<1, close, &vars);
+	mlx_key_hook(vars.win, doing, &vars);
 	mlx_loop(vars.mlx);
+	return (0);
 }
