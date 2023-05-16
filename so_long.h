@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 10:04:44 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/15 12:17:40 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/05/16 16:14:28 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,15 @@ typedef struct s_data
 typedef struct	s_vars {
 	void	*mlx;
 	void	*win;
+	int		h;
+	int		w;
 	char	*map;
 }				w_vars;
+
+
+void	checker_initialize(t_struct *checker);
+void	error_call(char *message);
+void	wall_checker(w_vars *win, int wid);
+void	map_checker(w_vars *win, t_struct *checker);
 
 #endif
