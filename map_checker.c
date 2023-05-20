@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:07:13 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/16 16:14:37 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/05/19 13:26:54 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,19 @@ void	wall_checker(w_vars *win, int wid)
 	int	i;
 
 	len = 0;
-	while(win->map[len] != '\n')
+	while(win->map->map[len] != '\n')
 		len++;
-	line = len; //13
-	colu = (wid - 1)/ (1 + len);//4
+	win->map->col = len - 1; //13
+	win->map->row = (wid - 1)/ (1 + len);//4
 	i = 0;
 	wid = 0;
-	while (wid <= colu)
+	while (wid <= win->map->row)
 	{
 		len = 0;
-		while (len <= line)
+		while (len <= win->map->col + 1)
 		{
-			if ((wid == 0 || wid == colu) || (len == 0 || len == line - 1))
-				if (win->map[i] != '1' && win->map[i] != '\n')
+			if ((wid == 0 || wid == win->map->row) || (len == 0 || len == win->map->col))
+				if (win->map->map[i] != '1' && win->map->map[i] != '\n')
 					error_call("Error\nMissing wall");
 			len++;
 			i++;
@@ -61,15 +61,15 @@ void	map_checker(w_vars *win, t_struct *checker)
 	int	i;
 
 	i = 0;
-	while(win->map[i])
+	while(win->map->map[i])
 	{
-		if (win->map[i] == 'P')
+		if (win->map->map[i] == 'P')
 			checker->p += 1;
-		if (win->map[i] == 'E')
+		if (win->map->map[i] == 'E')
 			checker->e += 1;
-		if (win->map[i] == 'C')
+		if (win->map->map[i] == 'C')
 			checker->c += 1;
-		if (win->map[i] == '0')
+		if (win->map->map[i] == '0')
 			checker->free += 1;
 		i++;
 	}
@@ -81,6 +81,6 @@ void	map_checker(w_vars *win, t_struct *checker)
 		error_call("Error\nNo colectibles");
 	if (checker->e != 1)
 		error_call("Error\nOn exit");
-	printf("%s", win->map);/*used just to visualize the map*/
+	printf("%s", win->map->map);/*used just to visualize the map*/
 	wall_checker(win, i);
 }
