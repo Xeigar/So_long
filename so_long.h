@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 10:04:44 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/19 19:35:51 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/05/23 18:48:10 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,11 @@ typedef struct s_struct
 {
 	int	prev_size;
 	int	p;
+	int	p_ck;
 	int	c;
+	int	c_ck;
 	int	e;
+	int	e_ck;
 	int free;
 }	t_struct;
 
@@ -46,9 +49,16 @@ typedef struct s_data
 	int		endian;
 }	img_data;
 
+typedef	struct s_point
+{
+	int x;
+	int y;
+}	t_point;
+
 typedef struct s_map
 {
-	char *map;
+	char *map_txt;
+	char **map_mx;
 	int col;
 	int row;
 }	t_map;
@@ -65,6 +75,7 @@ typedef struct	s_vars {
 	void	*win;
 	t_sprite	*sp;
 	t_map	*map;
+	t_point	player;
 }				w_vars;
 
 

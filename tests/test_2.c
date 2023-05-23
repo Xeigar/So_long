@@ -25,7 +25,7 @@ int main (void)
     mlx_window = mlx_new_window(mlx, 1920, 1800, "Hello!");
     img.img = mlx_xpm_file_to_image(mlx, relative_path, &img.w, &img.h);
     printf("%i", img.bits_per_pixel);
-    img.addr = mlx_get_data_addr(img.img, &(img.bits_per_pixel), &(img.line_length), &(img.endian));
+    //img.addr = mlx_get_data_addr(img.img, &(img.bits_per_pixel), &(img.line_length), &(img.endian));
     //img.w = 20;
     //img.h = 20;
     printf("Let's Find out what's inside our structure :D\n");
