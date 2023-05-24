@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 10:04:44 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/23 18:48:10 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/05/24 20:59:15 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@
 # include "libft.h"
 
 #	define SIZE 32
-#	define SPRITES 1
-#	define PW	"./Images and stuff/Walls/wall_righ.xpm"
-#	define PP
-#	define PC
-#	define PE
-#	define PB 
+#	define SPRITES 5
+#	define PW "./sprites/walls/wall_right.xpm"
+#	define PP "./sprites/Evil/test.xpm"
+#	define PC "./sprites/coin/coin.xpm"
+#	define PE "./sprites/walls/wall_right.xpm"
+#	define PF "./sprites/walls/wall_right.xpm"
 
 typedef struct s_struct
 {
@@ -37,6 +37,28 @@ typedef struct s_struct
 	int	e_ck;
 	int free;
 }	t_struct;
+
+typedef enum e_index
+{
+	W1 = 0,
+	F1 = 1,
+	C1 = 2,
+	E1 = 3,
+	P1 = 4,
+}		t_id;
+
+typedef enum e_button
+{
+	ESC		= 65307,
+	W		= 119,
+	A		= 97,
+	//S		= 115,
+	D		= 100,
+	UP		= 65362,
+	//DOWN	= 65364,
+	LEFT	= 65361,
+	RIGHT	= 65363,
+}		t_button;
 
 typedef struct s_data
 {
@@ -76,6 +98,7 @@ typedef struct	s_vars {
 	t_sprite	*sp;
 	t_map	*map;
 	t_point	player;
+	t_point player_next;
 }				w_vars;
 
 

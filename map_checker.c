@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:07:13 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/23 18:13:52 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/05/24 17:58:08 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,33 +59,34 @@ void	wall_checker(w_vars *win, int wid)
 	}
 }
 
-void	matrix_generator(w_vars *win)
+char	**matrix_generator(w_vars *win)
 {
 	int	c;
 	int	r;
 	int	pos;
+	char **temp;
 
-	win->map->map_mx =(char**)malloc(sizeof(char*) * (win->map->row + 2));
-	if (!win->map->map_mx)
-		return;
-	win->map->map_mx[win->map->row + 1] = NULL;
+	temp =(char**)malloc(sizeof(char*) * (win->map->row + 2));
+	if (!temp)
+		return (NULL);
+	temp[win->map->row + 1] = NULL;
 	r = 0;
 	pos = 0;
 	while (r <= win->map->row)
 	{
-		win->map->map_mx[r] =(char*)malloc(sizeof(char) * win->map->col);
-		if (!win->map->map_mx[r])
-			return;
+		temp[r] =(char*)malloc(sizeof(char) * win->map->col);
+		if (!temp[r])
+			return (NULL);
 		c = 0;
 		while (c < win->map->col + 1)
 		{
-			if (win->map->map_txt[pos] == '\n' )
+			if (win->map->map_txt[pos] == '\n')
 			{
 				c = 0;
 				pos++;
-			}	
-			win->map->map_mx[r][c] = win->map->map_txt[pos];
-			if (win->map->map_mx[r][c] == 'P')
+			}
+			temp[r][c] = win->map->map_txt[pos];
+			if (temp[r][c] == 'P')
 			{
 				win->player.x = r;
 				win->player.y = c;
@@ -95,6 +96,7 @@ void	matrix_generator(w_vars *win)
 		}
 		r++;
 	}
+	return(temp);
 }
 
 
@@ -121,13 +123,16 @@ void	flood_fill(char** map, t_point origin, t_struct *checker)
 
 void path_check(w_vars *win, t_struct *checker)
 {
-	flood_fill(win->map->map_mx, win->player,checker);
+	char **temp;
+
+	temp = matrix_generator(win);
+	flood_fill(temp, win->player,checker);
 	if (checker->c != checker->c_ck || checker->p != checker->p_ck
 	|| checker->e != checker->e_ck)
 		error_call("Error\nNo valid path");
+	free(temp);
 }
 
-/*Missing the verification of valid path FALTA VERIFICAR SE SE COLOCA OUTRO CHARACTER*/
 void	map_checker(w_vars *win, t_struct *checker)
 {
 	int	i;
@@ -155,6 +160,6 @@ void	map_checker(w_vars *win, t_struct *checker)
 		error_call("Error\nOn exit");
 	printf("%s", win->map->map_txt);/*used just to visualize the map*/
 	wall_checker(win, i);
-	matrix_generator(win);
+	win->map->map_mx = matrix_generator(win);
 	path_check(win, checker);
 }
