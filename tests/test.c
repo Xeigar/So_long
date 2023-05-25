@@ -42,7 +42,7 @@ int main (void)
     img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length, &img.endian);
     /*Esta funcao ajusta o pixel a imagem e atribui cor a localizacao em questao
     no adereco certo*/
-    my_mlx_pixel_put(&img, 20, 20, create_trgb(115, 52, 118, 102));
+    my_mlx_pixel_put(&img, 20, 20, create_trgb(0, 255, 255, 0));
     /*Coloca a imagem na janela e indica a posição do eixo dos x e y em
     que esta se encontra*/
 	mlx_put_image_to_window(mlx, mlx_window, img.img, 960, 540);

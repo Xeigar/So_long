@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 10:04:44 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/24 20:59:15 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/05/25 16:23:22 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 #	define PP "./sprites/Evil/test.xpm"
 #	define PC "./sprites/coin/coin.xpm"
 #	define PE "./sprites/walls/wall_right.xpm"
-#	define PF "./sprites/walls/wall_right.xpm"
+#	define PF "./sprites/free/free.xpm"
 
 typedef struct s_struct
 {
@@ -73,16 +73,16 @@ typedef struct s_data
 
 typedef	struct s_point
 {
-	int x;
-	int y;
+	int	x;
+	int	y;
 }	t_point;
 
 typedef struct s_map
 {
-	char *map_txt;
-	char **map_mx;
-	int col;
-	int row;
+	char	*map_txt;
+	char	**map_mx;
+	int		col;
+	int		row;
 }	t_map;
 
 typedef struct s_sprite
@@ -93,12 +93,12 @@ typedef struct s_sprite
 }	t_sprite;
 
 typedef struct	s_vars {
-	void	*mlx;
-	void	*win;
+	void		*mlx;
+	void		*win;
 	t_sprite	*sp;
-	t_map	*map;
-	t_point	player;
-	t_point player_next;
+	t_map		*map;
+	t_point		player;
+	t_point		player_next;
 }				w_vars;
 
 

@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 15:08:13 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/24 20:59:24 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/05/25 17:34:26 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,18 +103,112 @@ void lauch_game(w_vars *win)
 		error_call("Error\nWindow not created");
 }
 
-int	keybinding(int keycode, w_vars *win)
+void	clean_map(w_vars *win)
 {
-	if (keycode == ESC)
-		exit_game(win);
-	if (keycode == W || keycode == UP)
-		(t_point){win->player_next.x + 1, win->player_next.y};
-		
-	if (keycode == A || keycode == LEFT);
-	if (keycode == D || keycode == RIGHT);
+	size_t	i;
 	
+	if(!win->map->map_mx)
+		return;
+	i = 0;
+	while(win->map->map_mx[i])
+	{
+		free(win->map->map_mx[i]);
+		i++;
+	}
+	if(!win->map->map_txt)
+		return;
+	free(win->map->map_txt);
+}
+
+void	clean_sprites(w_vars *win)
+{
+	int	i;
+
+	i = -1;
+	while (++i < SPRITES)
+		mlx_destroy_image(win->mlx, win->sp[i].img);
+	free (win->sp);
+}
+
+void	exit_game(w_vars *win)
+{
+	if (!win)
+		return ;
+	if (win->map)
+		clean_map(win);
+	if (win->sp)
+		clean_sprites(win);
+	if (win->win)
+		mlx_destroy_window(win->mlx, win->win);
+	if (win->mlx)
+		mlx_destroy_display(win->mlx);
+	free(win->mlx);
+}
+
+int	quit_game(w_vars *win)
+{
+	exit_game(win);
+	exit(EXIT_SUCCESS);
+}
+
+int	get_key(int keycode, w_vars *win)
+{
+	printf("Move input\n");
+	if (keycode == ESC)
+		quit_game(win);
+	if (keycode == A || keycode == LEFT)
+		win->player_next = (t_point){win->player.x, win->player.y - 1};
+	if (keycode == D || keycode == RIGHT)
+		win->player_next = (t_point){win->player.x, win->player.y + 1};
+	if (keycode == W || keycode == UP)
+	{
+		if (win->map->map_mx[win->player.x - 2][win->player.y] != '1')
+			win->player_next = (t_point){win->player.x - 2, win->player.y};
+		else
+			win->player_next = (t_point){win->player.x - 1, win->player.y};
+	}
 	return(keycode);
 }
+
+void	move_player(w_vars *win, t_map *map)
+{
+	if (map->map_mx[win->player_next.x][win->player_next.y] != 'E')
+	{
+		map->map_mx[win->player_next.x][win->player_next.y] = 'P';
+		map->map_mx[win->player.x][win->player.y] = '0';
+	}
+	build_map(win);
+	/*This does the same thing as build_map the difference is the number of
+	sprites that are changed*/
+	//place(win, (t_point){win->player.x, win->player.y});
+	//place(win, (t_point){win->player_next.x, win->player_next.y});
+	win->player = win->player_next;
+}
+
+int	get_sprite(t_point	a, w_vars *win)
+{
+	return (win->map->map_mx[a.x][a.y]);
+}
+
+int	render_move(w_vars *win)
+{
+	static int	moves;
+
+	if (win->player.x == win->player_next.x && win->player.y == win->player_next.y)
+		return (0);
+	if (get_sprite(win->player_next, win) == '1')
+		return (0);
+	ft_putstr_fd("Number of moves :", 1);
+	ft_putnbr_fd(++moves, 1);
+	ft_putchar_fd('\n', 1);
+	move_player(win, win->map);
+	if (win->map->map_mx[win->player.x + 1][win->player.y] == '0') {
+		win->player_next = (t_point){win->player.x + 1, win->player.y};
+		move_player(win, win->map); // Recursive call to continue descending
+	}
+	return (0);
+}
+
 
 int	main(int argc, char **argv)
 {
@@ -127,7 +221,10 @@ int	main(int argc, char **argv)
 	lauch_game(&win);
 	get_assets(&win);
 	build_map(&win);
-	//mlx_key_hook(&win.win, keybinding,&win);
+	win.player_next = (t_point){0, 0};
+	mlx_hook(win.win, 2, (1L<<0), get_key, &win);
+	mlx_hook (win.win, 17, (1L<<17), quit_game, &win);
+	mlx_loop_hook(win.mlx, render_move, &win);
 	mlx_loop(win.mlx);
 	return (0);
 }
