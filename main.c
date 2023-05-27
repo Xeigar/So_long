@@ -6,18 +6,35 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 15:08:13 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/25 17:34:26 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/05/27 19:34:28 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
+char *obtain_txt(int fd, w_vars *win, char *line, t_struct *checker)
+{
+	char	*p;
+
+	p = "";
+	while (line)
+	{
+		if (ft_strlen(line) != checker->prev_size)
+			error_call("Error\nLines are not same size");
+		checker->prev_size = ft_strlen(line);
+		p = ft_strjoin(p, line);
+		free(line);
+		line = get_next_line(fd);
+	}
+	free(line);
+	return (p);
+}
+
 /*A funcao vai contar o tamanho das linhas e passar o conteudo
 do mapa para win->map, NOT WORKING FOR BLANK DOCUMENT*/
-void	get_map(int argc, char **argv, w_vars *win)
+void	get_map(int argc, char **argv, w_vars *win, t_struct *checker)
 {
 	int			fd;
-	t_struct	checker;
 	char		*line;
 
 	if (argc != 2)
@@ -27,23 +44,14 @@ void	get_map(int argc, char **argv, w_vars *win)
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
 		error_call("Error opening file");
-	//checker_initialize(&checker);
+	checker_initialize(checker);
 	line = get_next_line(fd);
 	if (!line || !*line)
 		error_call("Error Blank file");
-	checker.prev_size = ft_strlen(line);
-	win->map->map_txt = ft_strdup("");
-	while (line)
-	{
-		if (ft_strlen(line) != checker.prev_size)
-			error_call("Error\nLines are not same size");
-		checker.prev_size = ft_strlen(line);
-		win->map->map_txt = ft_strjoin(win->map->map_txt, line);
-		line = get_next_line(fd);
-	}
-	free(line);
+	checker->prev_size = ft_strlen(line);
+	win->map->map_txt = obtain_txt(fd, win, line, checker);
 	close (fd);
-	map_checker(win, &checker);
+	map_checker(win, checker);
 }
 
 void	get_assets(w_vars *win)
@@ -58,7 +66,6 @@ void	get_assets(w_vars *win)
 	win->sp[P1].img = mlx_xpm_file_to_image(win->mlx, PP, &(win->sp[P1].width), &(win->sp[P1].height));
 }
 
-/*Preciso de ajustar a escala as coins estão a fugir*/
 void place(w_vars *win, t_point pos)
 {
 	t_sprite	sp;
@@ -115,6 +122,10 @@ void	clean_map(w_vars *win)
 		free(win->map->map_mx[i]);
 		i++;
 	}
+	free(win->map->map_mx);
+}
+void	clean_map_txt(w_vars *win)
+{
 	if(!win->map->map_txt)
 		return;
 	free(win->map->map_txt);
@@ -134,8 +145,10 @@ void	exit_game(w_vars *win)
 {
 	if (!win)
 		return ;
-	if (win->map)
+	if (win->map->map_mx)
 		clean_map(win);
+	if (win->map->map_txt)
+		clean_map_txt(win);
 	if (win->sp)
 		clean_sprites(win);
 	if (win->win)
@@ -153,7 +166,11 @@ int	quit_game(w_vars *win)
 
 int	get_key(int keycode, w_vars *win)
 {
-	printf("Move input\n");
+	int	pos;
+	t_point	curr;
+
+	pos = 0;
+	curr = (t_point){win->player.x, win->player.y};
 	if (keycode == ESC)
 		quit_game(win);
 	if (keycode == A || keycode == LEFT)
@@ -161,12 +178,9 @@ int	get_key(int keycode, w_vars *win)
 	if (keycode == D || keycode == RIGHT)
 		win->player_next = (t_point){win->player.x, win->player.y + 1};
 	if (keycode == W || keycode == UP)
-	{
-		if (win->map->map_mx[win->player.x - 2][win->player.y] != '1')
-			win->player_next = (t_point){win->player.x - 2, win->player.y};
-		else
-			win->player_next = (t_point){win->player.x - 1, win->player.y};
-	}
+		win->player_next = (t_point){win->player.x - 1, win->player.y};
+	if (keycode == S || keycode == DOWN)
+		win->player_next = (t_point){win->player.x + 1, win->player.y};
 	return(keycode);
 }
 
@@ -174,14 +188,18 @@ void	move_player(w_vars *win, t_map *map)
 {
 	if (map->map_mx[win->player_next.x][win->player_next.y] != 'E')
 	{
+		if (map->map_mx[win->player_next.x][win->player_next.y] == 'C')
+			win->checker->c_ck += 1;
 		map->map_mx[win->player_next.x][win->player_next.y] = 'P';
 		map->map_mx[win->player.x][win->player.y] = '0';
 	}
-	build_map(win);
+	else if (map->map_mx[win->player_next.x][win->player_next.y] == 'E' && win->checker->c == win->checker->c_ck)
+		quit_game(win);
+	//build_map(win);
 	/*This does the same thing as build_map the difference is the number of
 	sprites that are changed*/
-	//place(win, (t_point){win->player.x, win->player.y});
-	//place(win, (t_point){win->player_next.x, win->player_next.y});
+	place(win, (t_point){win->player.x, win->player.y});
+	place(win, (t_point){win->player_next.x, win->player_next.y});
 	win->player = win->player_next;
 }
 
@@ -194,7 +212,9 @@ int	render_move(w_vars *win)
 {
 	static int	moves;
 
-	if (win->player.x == win->player_next.x && win->player.y == win->player_next.y)
+	if ((win->player.x == win->player_next.x && win->player.y == win->player_next.y) ||
+	(win->map->map_mx[win->player_next.x][win->player_next.y] == 'E' 
+	&& win->checker->c != win->checker->c_ck))
 		return (0);
 	if (get_sprite(win->player_next, win) == '1')
 		return (0);
@@ -202,10 +222,6 @@ int	render_move(w_vars *win)
 	ft_putnbr_fd(++moves, 1);
 	ft_putchar_fd('\n', 1);
 	move_player(win, win->map);
-	if (win->map->map_mx[win->player.x + 1][win->player.y] == '0') {
-		win->player_next = (t_point){win->player.x + 1, win->player.y};
-		move_player(win, win->map); // Recursive call to continue descending
-	}
 	return (0);
 }
 
@@ -214,9 +230,11 @@ int	main(int argc, char **argv)
 {
 	w_vars	win;
 	t_map	map;
+	t_struct	checker;
 
 	win.map = &map;
-	get_map(argc, argv, &win);
+	win.checker = &checker;
+	get_map(argc, argv, &win, win.checker);
 	/*Only gets the Wall sprite*/
 	lauch_game(&win);
 	get_assets(&win);

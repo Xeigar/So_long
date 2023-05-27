@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 16:07:13 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/24 17:58:08 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/05/27 19:36:32 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,18 @@ void	wall_checker(w_vars *win, int wid)
 	win->map->col = len - 1; //12
 	win->map->row = (wid - 1)/ (1 + len);//4
 	i = 0;
-	wid = 0;
-	while (wid <= win->map->row)
+	wid = -1;
+	while (++wid <= win->map->row)
 	{
-		len = 0;
-		while (len <= win->map->col + 1)
+		len = -1;
+		while (++len <= win->map->col + 1)
 		{
 			if ((wid == 0 || wid == win->map->row) 
 			|| (len == 0 || len == win->map->col))
 				if (win->map->map_txt[i] != '1' && win->map->map_txt[i] != '\n')
 					error_call("Error\nMissing wall");
-			len++;
 			i++;
 		}
-		wid++;
 	}
 }
 
@@ -70,15 +68,15 @@ char	**matrix_generator(w_vars *win)
 	if (!temp)
 		return (NULL);
 	temp[win->map->row + 1] = NULL;
-	r = 0;
+	r = -1;
 	pos = 0;
-	while (r <= win->map->row)
+	while (++r <= win->map->row)
 	{
-		temp[r] =(char*)malloc(sizeof(char) * win->map->col);
+		temp[r] =(char*)malloc(sizeof(char) * win->map->col + 1);
 		if (!temp[r])
 			return (NULL);
-		c = 0;
-		while (c < win->map->col + 1)
+		c = -1;
+		while (++c < win->map->col + 1)
 		{
 			if (win->map->map_txt[pos] == '\n')
 			{
@@ -91,10 +89,8 @@ char	**matrix_generator(w_vars *win)
 				win->player.x = r;
 				win->player.y = c;
 			}
-			c++;
 			pos++;
 		}
-		r++;
 	}
 	return(temp);
 }
@@ -124,12 +120,20 @@ void	flood_fill(char** map, t_point origin, t_struct *checker)
 void path_check(w_vars *win, t_struct *checker)
 {
 	char **temp;
+	int			a;
 
 	temp = matrix_generator(win);
 	flood_fill(temp, win->player,checker);
 	if (checker->c != checker->c_ck || checker->p != checker->p_ck
 	|| checker->e != checker->e_ck)
 		error_call("Error\nNo valid path");
+	checker->c_ck = 0;
+	a = 0;
+	while(temp[a])
+	{
+		free(temp[a]);
+		a++;
+	}
 	free(temp);
 }
 
@@ -146,14 +150,10 @@ void	map_checker(w_vars *win, t_struct *checker)
 			checker->e += 1;
 		if (win->map->map_txt[i] == 'C')
 			checker->c += 1;
-		if (win->map->map_txt[i] == '0')
-			checker->free += 1;
 		i++;
 	}
 	if (checker->p != 1)
 		error_call("Error\nOn starting position");
-	if (checker->free <= 0)
-		error_call("Error\nNo free space");
 	if (checker->c <= 0)
 		error_call("Error\nNo colectibles");
 	if (checker->e != 1)

@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 10:04:44 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/25 16:23:22 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/05/27 17:37:52 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 #	define PW "./sprites/walls/wall_right.xpm"
 #	define PP "./sprites/Evil/test.xpm"
 #	define PC "./sprites/coin/coin.xpm"
-#	define PE "./sprites/walls/wall_right.xpm"
+#	define PE "./sprites/exit/close.xpm"
 #	define PF "./sprites/free/free.xpm"
 
 typedef struct s_struct
@@ -35,7 +35,6 @@ typedef struct s_struct
 	int	c_ck;
 	int	e;
 	int	e_ck;
-	int free;
 }	t_struct;
 
 typedef enum e_index
@@ -52,10 +51,10 @@ typedef enum e_button
 	ESC		= 65307,
 	W		= 119,
 	A		= 97,
-	//S		= 115,
+	S		= 115,
 	D		= 100,
 	UP		= 65362,
-	//DOWN	= 65364,
+	DOWN	= 65364,
 	LEFT	= 65361,
 	RIGHT	= 65363,
 }		t_button;
@@ -99,6 +98,7 @@ typedef struct	s_vars {
 	t_map		*map;
 	t_point		player;
 	t_point		player_next;
+	t_struct	*checker;
 }				w_vars;
 
 
