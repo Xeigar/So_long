@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 10:04:44 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/27 17:37:52 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/05/27 20:19:34 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,15 @@ typedef struct	s_vars {
 
 void	checker_initialize(t_struct *checker);
 void	error_call(char *message);
-void	wall_checker(w_vars *win, int wid);
 void	map_checker(w_vars *win, t_struct *checker);
+int	get_rows(char *file);
+char	**matrix_generator(int fd, w_vars *win, char *line);
+void	get_map(int argc, char **argv, w_vars *win, t_struct *checker);
+void	wall_checker(w_vars *win);
+void	flood_fill(char** map, t_point origin, t_struct *checker);
+char **matrix_duplicator(w_vars *win);
+void path_check(w_vars *win, t_struct *checker);
+void	map_checker(w_vars *win, t_struct *checker);
+
 
 #endif

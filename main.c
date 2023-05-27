@@ -6,53 +6,13 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 15:08:13 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/27 19:34:28 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/05/27 19:45:38 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-char *obtain_txt(int fd, w_vars *win, char *line, t_struct *checker)
-{
-	char	*p;
 
-	p = "";
-	while (line)
-	{
-		if (ft_strlen(line) != checker->prev_size)
-			error_call("Error\nLines are not same size");
-		checker->prev_size = ft_strlen(line);
-		p = ft_strjoin(p, line);
-		free(line);
-		line = get_next_line(fd);
-	}
-	free(line);
-	return (p);
-}
-
-/*A funcao vai contar o tamanho das linhas e passar o conteudo
-do mapa para win->map, NOT WORKING FOR BLANK DOCUMENT*/
-void	get_map(int argc, char **argv, w_vars *win, t_struct *checker)
-{
-	int			fd;
-	char		*line;
-
-	if (argc != 2)
-		error_call("Error Wrong number of maps");
-	if(!ft_strnstr(argv[1], ".ber", ft_strlen(argv[1])))
-		error_call("Error Wrong file type");
-	fd = open(argv[1], O_RDONLY);
-	if (fd == -1)
-		error_call("Error opening file");
-	checker_initialize(checker);
-	line = get_next_line(fd);
-	if (!line || !*line)
-		error_call("Error Blank file");
-	checker->prev_size = ft_strlen(line);
-	win->map->map_txt = obtain_txt(fd, win, line, checker);
-	close (fd);
-	map_checker(win, checker);
-}
 
 void	get_assets(w_vars *win)
 {

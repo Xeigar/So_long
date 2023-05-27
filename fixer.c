@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   map_checker.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 16:07:13 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/27 20:04:27 by tmoutinh         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "so_long.h"
 
 void	checker_initialize(t_struct *checker)
@@ -29,72 +17,87 @@ void	error_call(char *message)
 	exit(1);
 }
 
-void	wall_checker(w_vars *win, int wid)
+int	get_rows(char *file)
 {
-	int	len;
-	int	line;
-	int	colu;
-	int	i;
+	int		fd;
+	int		row;
+	char	*line;
 
-	len = 0;
-	while(win->map->map_txt[len] != '\n')
-		len++;
-	win->map->col = len - 1; //12
-	win->map->row = (wid - 1)/ (1 + len);//4
-	i = 0;
-	wid = -1;
-	while (++wid <= win->map->row)
+	row = 0;
+	fd = open(file, O_RDONLY);
+	while (line)
 	{
-		len = -1;
-		while (++len <= win->map->col + 1)
-		{
-			if ((wid == 0 || wid == win->map->row) 
-			|| (len == 0 || len == win->map->col))
-				if (win->map->map_txt[i] != '1' && win->map->map_txt[i] != '\n')
-					error_call("Error\nMissing wall");
-			i++;
-		}
+		line = get_next_line(fd);
+		if (!line)
+			break ;
+		free(line);
+		row++;
 	}
+	close (fd);
+	return (row);
 }
 
-char	**matrix_generator(w_vars *win)
+char	**matrix_generator(int fd, w_vars *win, char *line)
 {
-	int	c;
 	int	r;
-	int	pos;
 	char **temp;
 
 	temp =(char**)malloc(sizeof(char*) * (win->map->row + 2));
 	if (!temp)
 		return (NULL);
 	temp[win->map->row + 1] = NULL;
-	r = -1;
-	pos = 0;
+	temp[0] = line;
+	r = 0;
 	while (++r <= win->map->row)
 	{
 		temp[r] =(char*)malloc(sizeof(char) * win->map->col + 1);
 		if (!temp[r])
 			return (NULL);
-		c = -1;
-		while (++c < win->map->col + 1)
-		{
-			if (win->map->map_txt[pos] == '\n')
-			{
-				c = 0;
-				pos++;
-			}
-			temp[r][c] = win->map->map_txt[pos];
-			if (temp[r][c] == 'P')
-			{
-				win->player.x = r;
-				win->player.y = c;
-			}
-			pos++;
-		}
+		if (ft_strlen(line) != win->checker->prev_size)
+		error_call("Error\nLines are not same size");
+		win->checker->prev_size = ft_strlen(line);
+		temp[r] = get_next_line(fd);
 	}
 	return(temp);
 }
 
+/*A funcao vai contar o tamanho das linhas e passar o conteudo
+do mapa para win->map, NOT WORKING FOR BLANK DOCUMENT*/
+void	get_map(int argc, char **argv, w_vars *win, t_struct *checker)
+{
+	int			fd;
+	char		*line;
+
+	if (argc != 2)
+		error_call("Error Wrong number of maps");
+	if(!ft_strnstr(argv[1], ".ber", ft_strlen(argv[1])))
+		error_call("Error Wrong file type");
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+		error_call("Error opening file");
+	checker_initialize(checker);
+	line = get_next_line(fd);
+	if (!line || !*line)
+		error_call("Error Blank file");
+	checker->prev_size = ft_strlen(line);
+	win->map->row = get_rows(argv[1]) - 1;//4 ou 5?
+	win->map->col = checker->prev_size - 1; //12
+	win->map->map_mx = matrix_generator(fd, win, line);
+	close (fd);
+	map_checker(win, checker);
+}
+
+void	wall_checker(w_vars *win)
+{	int	pos;
+	int	r;
+
+	r = -1;
+	if (win->map->map_mx[0][++r] != '1' || win->map->map_mx[win->map->col][r++] != '1')
+		error_call("Error\nMissing Wall");
+	r = -1;
+	if (win->map->map_mx[r++][0] != '1' || win->map->map_mx[r++][win->map->col] != '1')
+		error_call("Error\nMissing Wall");
+}
 
 void	flood_fill(char** map, t_point origin, t_struct *checker)
 {
@@ -116,13 +119,36 @@ void	flood_fill(char** map, t_point origin, t_struct *checker)
 	flood_fill(map, (t_point){origin.x, origin.y - 1}, checker);
 	flood_fill(map, (t_point){origin.x, origin.y + 1}, checker);
 }
+char **matrix_duplicator(w_vars *win)
+{
+	int	c;
+	int	r;
+	char **temp;
+
+	temp =(char**)malloc(sizeof(char*) * (win->map->row + 2));
+	if (!temp)
+		return (NULL);
+	temp[win->map->row + 1] = NULL;
+	r = -1;
+	while (++r <= win->map->row)
+	{
+		temp[r] =(char*)malloc(sizeof(char) * win->map->col + 1);
+		if (!temp[r])
+			return (NULL);
+		while (++c <= win->map->col)
+		{
+			temp[r][c] = win->map->map_mx[r][c];
+		}
+	}
+	return(temp);
+}
 
 void path_check(w_vars *win, t_struct *checker)
 {
 	char **temp;
 	int			a;
 
-	temp = matrix_generator(win);
+	temp = matrix_duplicator(win);
 	flood_fill(temp, win->player,checker);
 	if (checker->c != checker->c_ck || checker->p != checker->p_ck
 	|| checker->e != checker->e_ck)
@@ -163,6 +189,6 @@ void	map_checker(w_vars *win, t_struct *checker)
 	if (checker->e != 1)
 		error_call("Error\nOn exit");
 	printf("%s", win->map->map_txt);/*used just to visualize the map*/
-	wall_checker(win, i);
+	wall_checker(win);
 	path_check(win, checker);
 }
