@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 15:08:13 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/27 19:45:38 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/05/27 21:27:40 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,21 +74,15 @@ void	clean_map(w_vars *win)
 {
 	size_t	i;
 	
-	if(!win->map->map_mx)
-		return;
+	/*if(!win->map->map_mx)
+		return;*/
 	i = 0;
-	while(win->map->map_mx[i])
+	while(i <= win->map->row)
 	{
 		free(win->map->map_mx[i]);
 		i++;
 	}
 	free(win->map->map_mx);
-}
-void	clean_map_txt(w_vars *win)
-{
-	if(!win->map->map_txt)
-		return;
-	free(win->map->map_txt);
 }
 
 void	clean_sprites(w_vars *win)
@@ -107,8 +101,6 @@ void	exit_game(w_vars *win)
 		return ;
 	if (win->map->map_mx)
 		clean_map(win);
-	if (win->map->map_txt)
-		clean_map_txt(win);
 	if (win->sp)
 		clean_sprites(win);
 	if (win->win)

@@ -25,6 +25,7 @@ int	get_rows(char *file)
 
 	row = 0;
 	fd = open(file, O_RDONLY);
+	line = "";
 	while (line)
 	{
 		line = get_next_line(fd);
@@ -50,13 +51,9 @@ char	**matrix_generator(int fd, w_vars *win, char *line)
 	r = 0;
 	while (++r <= win->map->row)
 	{
-		temp[r] =(char*)malloc(sizeof(char) * win->map->col + 1);
-		if (!temp[r])
-			return (NULL);
-		if (ft_strlen(line) != win->checker->prev_size)
-		error_call("Error\nLines are not same size");
-		win->checker->prev_size = ft_strlen(line);
 		temp[r] = get_next_line(fd);
+		if (ft_strlen(temp[r]) != win->checker->prev_size)
+		error_call("Error\nLines are not same size");
 	}
 	return(temp);
 }
@@ -81,7 +78,7 @@ void	get_map(int argc, char **argv, w_vars *win, t_struct *checker)
 		error_call("Error Blank file");
 	checker->prev_size = ft_strlen(line);
 	win->map->row = get_rows(argv[1]) - 1;//4 ou 5?
-	win->map->col = checker->prev_size - 1; //12
+	win->map->col = checker->prev_size - 2; //12
 	win->map->map_mx = matrix_generator(fd, win, line);
 	close (fd);
 	map_checker(win, checker);
@@ -92,11 +89,17 @@ void	wall_checker(w_vars *win)
 	int	r;
 
 	r = -1;
-	if (win->map->map_mx[0][++r] != '1' || win->map->map_mx[win->map->col][r++] != '1')
-		error_call("Error\nMissing Wall");
+	while (++r <= win->map->col)
+	{
+		if (win->map->map_mx[0][r] != '1' || win->map->map_mx[win->map->row][r] != '1')
+			error_call("Error\nMissing Wall");
+	}
 	r = -1;
-	if (win->map->map_mx[r++][0] != '1' || win->map->map_mx[r++][win->map->col] != '1')
-		error_call("Error\nMissing Wall");
+	while (++r <= win->map->row)
+	{
+		if (win->map->map_mx[r][0] != '1' || win->map->map_mx[r][win->map->col] != '1')
+			error_call("Error\nMissing Wall");
+	}
 }
 
 void	flood_fill(char** map, t_point origin, t_struct *checker)
@@ -112,7 +115,9 @@ void	flood_fill(char** map, t_point origin, t_struct *checker)
 	if (map[origin.x][origin.y] != 'C' && map[origin.x][origin.y] != 'P'
 	&& map[origin.x][origin.y] != 'E' && map[origin.x][origin.y] != '1'
 	&& map[origin.x][origin.y] != 'F' && map[origin.x][origin.y] != '0')
+	{
 		error_call("Error\nUnknown character");
+	}
 	map[origin.x][origin.y] = 'F';
 	flood_fill(map, (t_point){origin.x - 1, origin.y}, checker);
 	flood_fill(map, (t_point){origin.x + 1, origin.y}, checker);
@@ -135,6 +140,7 @@ char **matrix_duplicator(w_vars *win)
 		temp[r] =(char*)malloc(sizeof(char) * win->map->col + 1);
 		if (!temp[r])
 			return (NULL);
+		c = -1;
 		while (++c <= win->map->col)
 		{
 			temp[r][c] = win->map->map_mx[r][c];
@@ -174,11 +180,14 @@ void	map_checker(w_vars *win, t_struct *checker)
 		j = -1;
 		while(win->map->map_mx[i][++j])
 		{
-			if (win->map->map_txt[i] == 'P')
+			if (win->map->map_mx[i][j] == 'P')
+			{
+				win->player = (t_point){i, j};
 				checker->p += 1;
-			if (win->map->map_txt[i] == 'E')
+			}
+			if (win->map->map_mx[i][j] == 'E')
 				checker->e += 1;
-			if (win->map->map_txt[i] == 'C')
+			if (win->map->map_mx[i][j] == 'C')
 				checker->c += 1;
 		}
 	}
@@ -188,7 +197,6 @@ void	map_checker(w_vars *win, t_struct *checker)
 		error_call("Error\nNo colectibles");
 	if (checker->e != 1)
 		error_call("Error\nOn exit");
-	printf("%s", win->map->map_txt);/*used just to visualize the map*/
 	wall_checker(win);
 	path_check(win, checker);
 }

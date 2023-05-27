@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 10:04:44 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/27 20:19:34 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/05/27 20:50:54 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ typedef	struct s_point
 
 typedef struct s_map
 {
-	char	*map_txt;
 	char	**map_mx;
 	int		col;
 	int		row;
