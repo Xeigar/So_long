@@ -14,11 +14,6 @@
 
 int	get_key(int keycode, w_vars *win)
 {
-	int		pos;
-	t_point	curr;
-
-	pos = 0;
-	curr = (t_point){win->player.x, win->player.y};
 	if (keycode == ESC)
 		quit_game(win);
 	if (keycode == A || keycode == LEFT)
