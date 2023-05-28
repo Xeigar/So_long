@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 10:04:44 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/28 17:14:33 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/05/28 17:27:00 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@
 
 typedef struct s_struct
 {
-	int	prev_size;
+	size_t	prev_size;
 	int	p;
 	int	p_ck;
 	int	c;
@@ -70,8 +70,8 @@ typedef	struct s_point
 typedef struct s_map
 {
 	char	**map_mx;
-	size_t		col;
-	size_t		row;
+	int		col;
+	int		row;
 }	t_map;
 
 typedef struct s_sprite
