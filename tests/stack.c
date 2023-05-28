@@ -26,3 +26,14 @@ void	b_map(w_vars *win)
 		
 	}
 }
+
+______________________________________
+
+
+void	map_project(int argc, char **argv, w_vars *win, t_struct *checker)
+{
+	get_map(argc, argv, win, checker);
+	map_checker(win, checker);
+	wall_checker(win);
+	path_check(win, checker);
+}

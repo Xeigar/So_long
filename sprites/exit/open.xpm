@@ -1,5 +1,5 @@
 /* XPM */
-static char * doors_leaf_open_xpm[] = {
+static char * open_xpm[] = {
 "32 32 13 1",
 " 	c None",
 ".	c #222222",

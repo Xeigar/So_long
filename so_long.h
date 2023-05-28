@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 10:04:44 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/27 20:50:54 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/05/28 17:14:33 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,17 @@
 
 # include <stdio.h>
 # include <fcntl.h>
-# include <mlx.h>
-# include "libft.h"
+# include "mlx_linux/mlx.h"
+# include "libft/libft.h"
 
-#	define SIZE 32
-#	define SPRITES 5
-#	define PW "./sprites/walls/wall_right.xpm"
-#	define PP "./sprites/Evil/test.xpm"
-#	define PC "./sprites/coin/coin.xpm"
-#	define PE "./sprites/exit/close.xpm"
-#	define PF "./sprites/free/free.xpm"
+#	define SIZE		32
+#	define SPRITES	5
+#	define PW		"./sprites/walls/wall_right.xpm"
+#	define PP		"./sprites/Evil/evil.xpm"
+#	define PC		"./sprites/coin/coin.xpm"
+#	define PE		"./sprites/exit/close.xpm"
+#	define PF		"./sprites/free/free.xpm"
+#	define PO		"./sprites/exit/open.xpm"
 
 typedef struct s_struct
 {
@@ -35,6 +36,7 @@ typedef struct s_struct
 	int	c_ck;
 	int	e;
 	int	e_ck;
+	int	unk;
 }	t_struct;
 
 typedef enum e_index
@@ -59,17 +61,6 @@ typedef enum e_button
 	RIGHT	= 65363,
 }		t_button;
 
-typedef struct s_data
-{
-    void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-    int		h;
-	int		w;
-	int		endian;
-}	img_data;
-
 typedef	struct s_point
 {
 	int	x;
@@ -79,8 +70,8 @@ typedef	struct s_point
 typedef struct s_map
 {
 	char	**map_mx;
-	int		col;
-	int		row;
+	size_t		col;
+	size_t		row;
 }	t_map;
 
 typedef struct s_sprite
@@ -101,17 +92,29 @@ typedef struct	s_vars {
 }				w_vars;
 
 
-void	checker_initialize(t_struct *checker);
-void	error_call(char *message);
-void	map_checker(w_vars *win, t_struct *checker);
-int	get_rows(char *file);
+int		main(int argc, char **argv);
+int		render_move(w_vars *win);
+int		get_sprite(t_point	a, w_vars *win);
+void	move_player(w_vars *win, t_map *map);
+int		get_key(int keycode, w_vars *win);
+int		quit_game(w_vars *win);
+void	exit_game(w_vars *win);
+void	clean_sprites(w_vars *win);
+void	clean_map(w_vars *win);
+void	lauch_game(w_vars *win);
+void	build_map(w_vars *win);
+void	place(w_vars *win, t_point pos);
+void	get_assets(w_vars *win);
+void	error_call(char *message, w_vars *win);
+int		get_rows(char *file);
 char	**matrix_generator(int fd, w_vars *win, char *line);
 void	get_map(int argc, char **argv, w_vars *win, t_struct *checker);
 void	wall_checker(w_vars *win);
-void	flood_fill(char** map, t_point origin, t_struct *checker);
-char **matrix_duplicator(w_vars *win);
-void path_check(w_vars *win, t_struct *checker);
+void	flood_fill(char **map, t_point origin, t_struct *checker);
+char	**matrix_duplicator(w_vars *win);
+void	path_check(w_vars *win, t_struct *checker);
 void	map_checker(w_vars *win, t_struct *checker);
-
+void	char_check(w_vars *win, t_struct *checker);
+void	map_project(int argc, char **argv, w_vars *win, t_struct *checker);
 
 #endif
