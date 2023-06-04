@@ -1,2 +1,8 @@
 TESTS RAN: (TEST EVERY EXIT CONDITION)
-->
+-> Valid map;
+-> Missing wall;
+-> Invalid map;
+-> Wrong file type;
+-> No coin, player or exit;
+-> 
+

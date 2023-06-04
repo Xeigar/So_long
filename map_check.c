@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 15:44:23 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/28 17:17:50 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/06/04 19:30:02 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ void	wall_checker(w_vars *win)
 void	char_check(w_vars *win, t_struct *checker)
 {
 	if (checker->p != 1)
-		error_call("Error\nOn starting position", win);
+		error_call("Error\nNo starting position", win);
 	if (checker->c <= 0)
 		error_call("Error\nNo colectibles", win);
 	if (checker->e != 1)
-		error_call("Error\nOn exit", win);
+		error_call("Error\nNo exit", win);
 }
 
 void	map_checker(w_vars *win, t_struct *checker)

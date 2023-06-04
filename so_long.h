@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 10:04:44 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/28 17:27:00 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/06/04 19:24:16 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include <stdio.h>
 # include <fcntl.h>
-# include "mlx_linux/mlx.h"
-# include "libft/libft.h"
+# include "libs/mlx_linux/mlx.h"
+# include "libs/libft/libft.h"
 
 #	define SIZE		32
 #	define SPRITES	5
@@ -116,5 +116,6 @@ void	path_check(w_vars *win, t_struct *checker);
 void	map_checker(w_vars *win, t_struct *checker);
 void	char_check(w_vars *win, t_struct *checker);
 void	map_project(int argc, char **argv, w_vars *win, t_struct *checker);
+void	temp_freer(char **arr);
 
 #endif

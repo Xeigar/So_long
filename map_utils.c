@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fixer.c                                            :+:      :+:    :+:   */
+/*   map_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 12:40:39 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/28 15:46:57 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/06/04 19:25:55 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ char	**matrix_generator(int fd, w_vars *win, char *line)
 	while (++r <= win->map->row)
 	{
 		temp[r] = line;
-		if (ft_strlen(temp[r]) != win->checker->prev_size)
-			error_call("Error\nLines are not same size", win);
 		line = get_next_line(fd);
 	}
 	return (temp);
@@ -102,22 +100,20 @@ char	**matrix_duplicator(w_vars *win)
 void	path_check(w_vars *win, t_struct *checker)
 {
 	char	**temp;
-	int		a;
 
 	temp = matrix_duplicator(win);
 	flood_fill(temp, win->player, checker);
 	if (checker->c != checker->c_ck || checker->p != checker->p_ck
 		|| checker->e != checker->e_ck)
-		error_call("Error\nNo valid path", win);
-	if (checker->unk != 0)
-		error_call("Error\nUnknown character", win);
-	checker->c_ck = 0;
-	a = 0;
-	while (temp[a])
 	{
-		free(temp[a]);
-		a++;
+		temp_freer(temp);
+		error_call("Error\nNo valid path", win);
 	}
-	free(temp);
+	if (checker->unk != 0)
+	{
+		temp_freer(temp);
+		error_call("Error\nUnknown character", win);
+	}
+	checker->c_ck = 0;
+	temp_freer(temp);
 }
-

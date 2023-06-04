@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 15:41:41 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/05/28 15:42:44 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/06/04 19:23:41 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,17 @@ int	render_move(w_vars *win)
 	ft_putchar_fd('\n', 1);
 	move_player(win, win->map);
 	return (0);
+}
+
+void	temp_freer(char **arr)
+{
+	int	a;
+
+	a = 0;
+	while (arr[a])
+	{
+		free(arr[a]);
+		a++;
+	}
+	free(arr);
 }

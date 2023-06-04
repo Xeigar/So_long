@@ -7,9 +7,11 @@ CC = cc
 
 RM = rm -f
 
-LIBFT_PATH = libft/
+BONUS_PATH = 
 
-MLX_PATH = mlx_linux/
+LIBFT_PATH = libs/libft/
+
+MLX_PATH = libs/mlx_linux/
 
 LIBFT = -L $(LIBFT_PATH) -lft
 
@@ -18,7 +20,7 @@ MLX = -L $(MLX_PATH) -lmlx_Linux -L/usr/lib -Imlx_linux -lXext -lX11 -lm -lz
 OBJS = $(SRCS:.c=.o)
 
 .c.o:
-		${CC} ${FLAGS} -I. -c $<
+		${CC} ${FLAGS} -c $<
 
 $(NAME): $(OBJS)
 	make -C $(LIBFT_PATH)
@@ -34,8 +36,11 @@ clean:
 
 fclean: clean
 	make -C ${LIBFT_PATH} fclean
-	${RM} ${OUT}
+	${RM} ${NAME}
 
 re: fclean all
 
-.PHONY:all clean fclean re
+bonus:
+	make -C $(BONUS_PATH)
+
+.PHONY:all clean fclean re bonus
