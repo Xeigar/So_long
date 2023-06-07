@@ -7,7 +7,7 @@ CC = cc
 
 RM = rm -f
 
-BONUS_PATH = 
+BONUS_PATH = ../so_long_bonus/
 
 LIBFT_PATH = libs/libft/
 
