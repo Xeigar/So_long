@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 10:04:44 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/06/10 13:20:56 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/06/10 15:53:01 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@
 
 # define SIZE 32
 # define SPRITES 5
-# define PW "./sprites/walls/wall_right.xpm"
-# define PP "./sprites/Evil/evil.xpm"
-# define PC "./sprites/coin/coin.xpm"
-# define PE "./sprites/exit/close.xpm"
-# define PF "./sprites/free/free.xpm"
-# define PO "./sprites/exit/open.xpm"
+# define PW "./textures/walls/wall_right.xpm"
+# define PP "./textures/Evil/evil.xpm"
+# define PC "./textures/coin/coin.xpm"
+# define PE "./textures/exit/close.xpm"
+# define PF "./textures/free/free.xpm"
+# define PO "./textures/exit/open.xpm"
 
 typedef struct s_struct
 {

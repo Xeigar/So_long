@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 15:41:41 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/06/10 15:44:08 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/06/10 15:58:20 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,10 @@ void	temp_freer(char **arr)
 
 void	line_freer(int fd, char *line, char **temp)
 {
-	int i;
+	int	i;
 
 	i = -1;
-	while(temp[++i] != line)
+	while (temp[++i] != line)
 	{
 		free(temp[i]);
 	}	

@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 12:40:39 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/06/10 13:25:51 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/06/10 15:57:25 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ char	**matrix_generator(int fd, t_vars *win, char *line)
 			line_freer(fd, line, temp);
 			error_call("Error\n Lines are different size", win);
 		}
-		if (r == win->map->row && ft_strlen(line) + 1 != win->checker->prev_size)
+		if (r == win->map->row && ft_strlen(line) + 1
+			!= win->checker->prev_size)
 		{
 			line_freer(fd, line, temp);
 			error_call("Error\n Lines are different size", win);

@@ -6,7 +6,7 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 10:04:44 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/06/10 15:43:54 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/06/10 15:52:29 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,19 @@
 # define SPRITES	4
 # define PLAYER	4
 # define ENEMY	4
-# define PW		"./sprites/walls/wall_right.xpm"
-# define PP1		"./sprites/Evil/evil_1.xpm"
-# define PP2		"./sprites/Evil/evil_2.xpm"
-# define PP3		"./sprites/Evil/evil_3.xpm"
-# define PP4		"./sprites/Evil/evil_4.xpm"
-# define PD1		"./sprites/villain/villain_8.xpm"
-# define PD2		"./sprites/villain/villain_3.xpm"
-# define PD3		"./sprites/villain/villain_4.xpm"
-# define PD4		"./sprites/villain/villain_7.xpm"
-# define PC		"./sprites/coin/coin.xpm"
-# define PE		"./sprites/exit/close.xpm"
-# define PF		"./sprites/free/free.xpm"
-# define PO		"./sprites/exit/open.xpm"
+# define PW		"./textures/walls/wall_right.xpm"
+# define PP1		"./textures/Evil/evil_1.xpm"
+# define PP2		"./textures/Evil/evil_2.xpm"
+# define PP3		"./textures/Evil/evil_3.xpm"
+# define PP4		"./textures/Evil/evil_4.xpm"
+# define PD1		"./textures/villain/villain_8.xpm"
+# define PD2		"./textures/villain/villain_3.xpm"
+# define PD3		"./textures/villain/villain_4.xpm"
+# define PD4		"./textures/villain/villain_7.xpm"
+# define PC		"./textures/coin/coin.xpm"
+# define PE		"./textures/exit/close.xpm"
+# define PF		"./textures/free/free.xpm"
+# define PO		"./textures/exit/open.xpm"
 
 typedef struct s_struct
 {
