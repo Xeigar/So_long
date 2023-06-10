@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_utils.c                                        :+:      :+:    :+:   */
+/*   map_utils_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 12:40:39 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/06/10 13:25:51 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/06/10 15:44:12 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 int	get_rows(char *file)
 {
@@ -63,7 +63,13 @@ char	**matrix_generator(int fd, t_vars *win, char *line)
 
 void	flood_fill(char **map, t_point origin, t_struct *checker)
 {
-	if (map[origin.x][origin.y] == '1' || map[origin.x][origin.y] == 'F')
+	if (map[origin.x][origin.y] != 'C' && map[origin.x][origin.y] != 'P'
+	&& map[origin.x][origin.y] != 'E' && map[origin.x][origin.y] != '1'
+	&& map[origin.x][origin.y] != 'F' && map[origin.x][origin.y] != '0'
+	&& map[origin.x][origin.y] != 'V')
+		checker->unk += 1;
+	if (map[origin.x][origin.y] == '1' || map[origin.x][origin.y] == 'F'
+	|| map[origin.x][origin.y] == 'V')
 		return ;
 	if (map[origin.x][origin.y] == 'P')
 		checker->p_ck += 1;
@@ -71,10 +77,6 @@ void	flood_fill(char **map, t_point origin, t_struct *checker)
 		checker->e_ck += 1;
 	if (map[origin.x][origin.y] == 'C')
 		checker->c_ck += 1;
-	if (map[origin.x][origin.y] != 'C' && map[origin.x][origin.y] != 'P'
-	&& map[origin.x][origin.y] != 'E' && map[origin.x][origin.y] != '1'
-	&& map[origin.x][origin.y] != 'F' && map[origin.x][origin.y] != '0')
-		checker->unk += 1;
 	map[origin.x][origin.y] = 'F';
 	flood_fill(map, (t_point){origin.x - 1, origin.y}, checker);
 	flood_fill(map, (t_point){origin.x + 1, origin.y}, checker);

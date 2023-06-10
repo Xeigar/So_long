@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_check.c                                        :+:      :+:    :+:   */
+/*   map_check_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 15:44:23 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/06/10 12:39:38 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/06/10 15:44:15 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 void	wall_checker(t_vars *win)
 {
@@ -44,8 +44,8 @@ void	char_check(t_vars *win, t_struct *checker)
 
 void	map_checker(t_vars *win, t_struct *checker)
 {
-	int	i;
-	int	j;
+	size_t	i;
+	size_t	j;
 
 	i = -1;
 	while (win->map->map_mx[++i])
@@ -77,7 +77,7 @@ void	get_map(int argc, char **argv, t_vars *win, t_struct *checker)
 		error_call("Error\nWrong file type", win);
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
-		error_call("Error\nopening file", win);
+		error_call("Error\nOpening file", win);
 	ft_bzero(checker, sizeof(t_struct));
 	line = get_next_line(fd);
 	if (!line || !*line)

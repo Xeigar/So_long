@@ -1,38 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   asset_handling.c                                   :+:      :+:    :+:   */
+/*   asset_handling_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/12 15:08:13 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/06/10 11:08:19 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/06/10 15:44:25 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 void	get_assets(t_vars *win)
 {
-	win->sp = (t_sprite *)ft_calloc(SPRITES, sizeof(t_sprite));
-	if (!win->sp)
-		error_call("Error\nSprite not allocated", win);
-	win->sp[W1].img = mlx_xpm_file_to_image(win->mlx, PW, &(win->sp[W1].width),
-			&(win->sp[W1].height));
-	win->sp[F1].img = mlx_xpm_file_to_image(win->mlx, PF, &(win->sp[F1].width),
-			&(win->sp[F1].height));
-	win->sp[C1].img = mlx_xpm_file_to_image(win->mlx, PC, &(win->sp[C1].width),
-			&(win->sp[C1].height));
-	win->sp[E1].img = mlx_xpm_file_to_image(win->mlx, PE, &(win->sp[E1].width),
-			&(win->sp[E1].height));
-	win->sp[P1].img = mlx_xpm_file_to_image(win->mlx, PP, &(win->sp[P1].width),
-			&(win->sp[P1].height));
+	load_terrain(win);
+	load_enemy(win);
+	load_player(win);
 }
 
 void	place(t_vars *win, t_point pos)
 {
 	t_sprite	sp;
 
+	win->move_print = ft_itoa(win->moves);
 	if (win->map->map_mx[pos.x][pos.y] == '1')
 		sp = win->sp[W1];
 	if (win->map->map_mx[pos.x][pos.y] == '0')
@@ -40,9 +31,18 @@ void	place(t_vars *win, t_point pos)
 	if (win->map->map_mx[pos.x][pos.y] == 'C')
 		sp = win->sp[C1];
 	if (win->map->map_mx[pos.x][pos.y] == 'E')
-			sp = win->sp[E1];
+		sp = win->sp[E1];
 	if (win->map->map_mx[pos.x][pos.y] == 'P')
-		sp = win->sp[P1];
+		sp = win->player_sp[win->frame];
+	if (win->map->map_mx[pos.x][pos.y] == 'V')
+		sp = win->enemy_sp[win->frame];
+	mlx_string_put(win->mlx, win->win,
+		32 / 8, 32 / 3, (255 << 24) | (255 << 16)
+		| (255 << 8) | 255, "Number of moves:");
+	mlx_string_put(win->mlx, win->win,
+		32 * 3.5, 32 / 3, (255 << 24) | (255 << 16)
+		| (255 << 8) | 255, win->move_print);
+	free(win->move_print);
 	mlx_put_image_to_window(win->mlx, win->win, sp.img,
 		pos.y * sp.width, pos.x * sp.height);
 }

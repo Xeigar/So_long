@@ -1,5 +1,5 @@
 NAME = so_long
-SRCS = so_long.c asset_handling.c clean_exit.c map_check.c map_utils.c move_player.c sprite_loader.c
+SRCS = so_long_bonus.c asset_handling_bonus.c clean_exit_bonus.c map_check_bonus.c map_utils_bonus.c move_player_bonus.c sprite_loader_bonus.c
 
 FLAGS = -Wall -Werror -Wextra -g
 
@@ -7,9 +7,9 @@ CC = cc
 
 RM = rm -f
 
-LIBFT_PATH = libs/libft/
+LIBFT_PATH = ../so_long/libs/libft/
 
-MLX_PATH = libs/mlx_linux/
+MLX_PATH = ../so_long/libs/mlx_linux/
 
 LIBFT = -L $(LIBFT_PATH) -lft
 

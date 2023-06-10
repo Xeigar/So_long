@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   move_player.c                                      :+:      :+:    :+:   */
+/*   move_player_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 15:41:41 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/06/10 13:28:28 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/06/10 15:44:08 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
 int	get_key(int keycode, t_vars *win)
 {
@@ -31,6 +31,8 @@ void	move_player(t_vars *win, t_map *map)
 {
 	if (map->map_mx[win->player_next.x][win->player_next.y] != 'E')
 	{
+		if (map->map_mx[win->player_next.x][win->player_next.y] == 'V')
+			quit_game(win);
 		if (map->map_mx[win->player_next.x][win->player_next.y] == 'C')
 			win->checker->c_ck += 1;
 		map->map_mx[win->player_next.x][win->player_next.y] = 'P';
@@ -42,7 +44,7 @@ void	move_player(t_vars *win, t_map *map)
 					&(win->sp[E1].width), &(win->sp[E1].height));
 		}
 	}
-	else if (map->map_mx[win->player_next.x][win->player_next.y] == 'E'
+	if (map->map_mx[win->player_next.x][win->player_next.y] == 'E'
 	&& win->checker->c == win->checker->c_ck)
 		quit_game(win);
 	build_map(win);
@@ -51,8 +53,6 @@ void	move_player(t_vars *win, t_map *map)
 
 int	render_move(t_vars *win)
 {
-	static int	moves;
-
 	if ((win->player.x == win->player_next.x
 			&& win->player.y == win->player_next.y)
 		|| (win->map->map_mx[win->player_next.x][win->player_next.y] == 'E'
@@ -60,9 +60,7 @@ int	render_move(t_vars *win)
 		return (0);
 	if (get_sprite(win->player_next, win) == '1')
 		return (0);
-	ft_putstr_fd("Number of moves :", 1);
-	ft_putnbr_fd(++moves, 1);
-	ft_putchar_fd('\n', 1);
+	win->moves += 1;
 	move_player(win, win->map);
 	return (0);
 }

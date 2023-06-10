@@ -7,7 +7,7 @@ CC = cc
 
 RM = rm -f
 
-BONUS_PATH = ../so_long_bonus/
+BONUS_PATH = ../so_long_bonus/ 
 
 LIBFT_PATH = libs/libft/
 
@@ -31,10 +31,12 @@ $(NAME): $(OBJS)
 all: $(NAME)
 
 clean:
+	make -C $(BONUS_PATH) clean
 	make -C ${LIBFT_PATH} clean
 	$(RM) $(OBJS)
 
 fclean: clean
+	make -C $(BONUS_PATH) fclean
 	make -C ${LIBFT_PATH} fclean
 	${RM} ${NAME}
 

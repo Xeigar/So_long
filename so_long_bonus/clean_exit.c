@@ -6,20 +6,20 @@
 /*   By: tmoutinh <tmoutinh@student.42porto.com     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/28 15:39:56 by tmoutinh          #+#    #+#             */
-/*   Updated: 2023/06/04 18:14:26 by tmoutinh         ###   ########.fr       */
+/*   Updated: 2023/06/10 15:44:20 by tmoutinh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "so_long.h"
+#include "so_long_bonus.h"
 
-void	error_call(char *message, w_vars *win)
+void	error_call(char *message, t_vars *win)
 {
 	perror(message);
 	exit_game(win);
 	exit(1);
 }
 
-void	clean_map(w_vars *win)
+void	clean_map(t_vars *win)
 {
 	int	i;
 
@@ -31,7 +31,7 @@ void	clean_map(w_vars *win)
 	free(win->map->map_mx);
 }
 
-void	clean_sprites(w_vars *win, t_sprite *arr, int size)
+void	clean_sprites(t_vars *win, t_sprite *arr, int size)
 {
 	int	i;
 
@@ -47,7 +47,7 @@ void	clean_sprites(w_vars *win, t_sprite *arr, int size)
 	free (arr);
 }
 
-void	exit_game(w_vars *win)
+void	exit_game(t_vars *win)
 {
 	if (!win)
 		return ;
@@ -66,7 +66,7 @@ void	exit_game(w_vars *win)
 	free(win->mlx);
 }
 
-int	quit_game(w_vars *win)
+int	quit_game(t_vars *win)
 {
 	exit_game(win);
 	exit(EXIT_SUCCESS);
