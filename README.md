@@ -1,4 +1,5 @@
-# 👹🎮 So_long 🎮👹 (https://github.com/Xeigar/So_long/blob/95934a53cf574c666d31d69b611a646176eccbd9/So_long.gif)
+# 👹🎮 So_long 🎮👹 
+So_long.gif
 
 This project is a very small 2D game.
 Its purpose is to make you work with textures, sprites,
