@@ -1,4 +1,7 @@
 # 👹🎮 So_long 🎮👹
+<p align="center">
+<img src=[https://github.com/Xeigar/So_long/blob/main/So_long.gif] align="center" width="100%" height="250"/>
+</p>
 
 This project is a very small 2D game.
 Its purpose is to make you work with textures, sprites,
