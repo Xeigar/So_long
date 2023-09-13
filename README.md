@@ -1,7 +1,7 @@
 # 👹🎮 So_long 🎮👹 
 <div align=center>
     
-![Animated GIF]([So_long.gif](https://github.com/Xeigar/So_long/blob/main/So_long.gif))
+![Animated GIF](https://github.com/Xeigar/So_long/blob/main/So_long.gif?raw=true)
 
 </div>
 
