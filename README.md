@@ -1,5 +1,5 @@
 # 👹🎮 So_long 🎮👹 
-So_long.gif
+![Animated GIF](So_long.gif)
 
 This project is a very small 2D game.
 Its purpose is to make you work with textures, sprites,
